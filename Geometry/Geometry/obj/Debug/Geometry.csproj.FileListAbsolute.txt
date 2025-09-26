@@ -1,0 +1,5 @@
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\Geometry.csproj.AssemblyReference.cache
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\MainWindow.g.cs
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\App.g.cs
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\Geometry_MarkupCompile.cache
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\Geometry_MarkupCompile.lref
