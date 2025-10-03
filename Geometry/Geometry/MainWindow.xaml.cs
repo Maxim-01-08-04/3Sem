@@ -31,7 +31,7 @@ namespace Geometry
         }
 
         public void DrawLine(Point2D p1, Point2D p2, Brush color)
-        {
+        {  //создаем новый объект и указываем цвет и толщину
             Line line = new Line();
             line.Stroke = color;
             line.StrokeThickness = 2;
@@ -42,7 +42,7 @@ namespace Geometry
             Scene.Children.Add(line);
         }
 
-        // Функция рисования треугольника
+        // ффункция рисования треугольника
         public void DrawTriangle(Triangle tr)
         {
             DrawLine(tr.getP1(), tr.getP2(), Brushes.Red);
@@ -50,7 +50,7 @@ namespace Geometry
             DrawLine(tr.getP3(), tr.getP1(), Brushes.Red);
         }
 
-        // Функция рисования прямоугольника
+        // функция рисования прямоугольника
         public void DrawRectangle(Rectangle rect)
         {
             DrawLine(rect.getP1(), rect.getP2(), Brushes.Blue);
@@ -59,18 +59,18 @@ namespace Geometry
             DrawLine(rect.getP4(), rect.getP1(), Brushes.Blue);
         }
 
-        // Очистка сцены
+        
         public void ClearScene()
         {
             Scene.Children.Clear();
         }
 
-        // Создание фигур со случайными параметрами
+        //  фигуры со случайными параметрами
         private void btnCreateRandom_Click(object sender, RoutedEventArgs e)
         {
             ClearScene();
 
-            // Создание случайного треугольника
+            
             Point2D p1 = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 50),
                                     rnd.Next(50, (int)Scene.ActualHeight - 50));
             Point2D p2 = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 50),
@@ -79,7 +79,7 @@ namespace Geometry
                                     rnd.Next(50, (int)Scene.ActualHeight - 50));
             triangle = new Triangle(p1, p2, p3);
 
-            // Создание случайного прямоугольника
+            
             Point2D startPoint = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 150),
                                            rnd.Next(50, (int)Scene.ActualHeight - 150));
             int width = rnd.Next(50, 150);
@@ -91,10 +91,10 @@ namespace Geometry
             DrawRectangle(rectangle);
         }
 
-        // Создание фигур с пользовательскими параметрами
+        // создание фигур с пользовательскими параметрами
         private void btnCreateCustom_Click(object sender, RoutedEventArgs e)
         {
-            // Диалог для ввода параметров треугольника
+            
             var triangleDialog = new InputDialog("Введите координаты треугольника (x1,y1,x2,y2,x3,y3):", "100,100,200,150,150,200");
             if (triangleDialog.ShowDialog() == true)
             {
@@ -113,7 +113,7 @@ namespace Geometry
                 }
             }
 
-            // Диалог для ввода параметров прямоугольника
+            
             var rectDialog = new InputDialog("Введите параметры прямоугольника (x,y,width,height):", "300,300,100,80");
             if (rectDialog.ShowDialog() == true)
             {
@@ -135,7 +135,7 @@ namespace Geometry
             DrawRectangle(rectangle);
         }
 
-        // Перемещение фигур
+        
         private void btnMove_Click(object sender, RoutedEventArgs e)
         {
             if (triangle == null || rectangle == null)
@@ -169,7 +169,7 @@ namespace Geometry
             }
         }
 
-        // Очистка сцены
+        
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             ClearScene();
@@ -178,3 +178,4 @@ namespace Geometry
         }
     }
 }
+
