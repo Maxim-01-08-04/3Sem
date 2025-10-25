@@ -1,0 +1,22 @@
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\Geometry.csproj.AssemblyReference.cache
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\MainWindow.g.cs
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\App.g.cs
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\Geometry_MarkupCompile.cache
+C:\Users\im010\OneDrive\Рабочий стол\Учеба\Программирование и обработка графичекого интерфейса\3Sem\Geometry\Geometry\obj\Debug\Geometry_MarkupCompile.lref
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\bin\Debug\Geometry.exe.config
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\bin\Debug\Geometry.exe
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\bin\Debug\Geometry.pdb
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\Geometry.csproj.AssemblyReference.cache
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\InputDialog.baml
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\InputDialog.g.cs
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\MainWindow.g.cs
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\App.g.cs
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\Geometry_MarkupCompile.cache
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\Geometry_MarkupCompile.lref
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\MainWindow.baml
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\Geometry.g.resources
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\Geometry.Properties.Resources.resources
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\Geometry.csproj.GenerateResource.cache
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\Geometry.csproj.CoreCompileInputs.cache
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\Geometry.exe
+C:\Users\SAPR\Desktop\3Sem-1lab_university\3Sem-1lab_university\Geometry\Geometry\obj\Debug\Geometry.pdb
