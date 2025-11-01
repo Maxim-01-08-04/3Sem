@@ -17,9 +17,10 @@
 
             <Slider x:Name="y"  Margin="0, 15, 0, 0" Minimum="-10" Maximum="10" ValueChanged="y_ValueChanged" Value="0"/>
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10" Background="LightGray">
-                <Button x:Name="btnCreateRandom" Content="Создать случайные фигуры" Click="btnCreateRandom_Click" Margin="5" Padding="10"/>
+                <Button x:Name="btnCreateRandom_tri" Content="Создать случайный треугольник" Click="btnCreateRandom_Click_tri" Margin="5" Padding="10"/>
+                <Button x:Name="btnCreateRandom_rect" Content="Создать случайный прямоугольник" Click="btnCreateRandom_Click_rect" Margin="5" Padding="10"/>
                 <Button x:Name="btnCreateCustom" Content="Создать фигуры по параметрам" Click="btnCreateCustom_Click" Margin="5" Padding="10"/>
-                <Button x:Name="btnMove" Content="Переместить фигуры" Click="btnMove_Click" Margin="5" Padding="10"/>
+                <!--<Button x:Name="btnMove" Content="Переместить фигуры" Click="btnMove_Click" Margin="5" Padding="10"/>-->
                 <Button x:Name="btnClear" Content="Очистить сцену" Click="btnClear_Click" Margin="5" Padding="10"/>
             </StackPanel>
             <Canvas x:Name="Scene" Grid.Row="1" VerticalAlignment="Bottom" 

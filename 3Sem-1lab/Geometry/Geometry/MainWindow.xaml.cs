@@ -22,6 +22,7 @@ namespace Geometry
     {
         private Triangle triangle;
         private Rectangle rectangle;
+
         private Random rnd;
 
         public MainWindow()
@@ -59,18 +60,19 @@ namespace Geometry
             DrawLine(rect.getP4(), rect.getP1(), Brushes.Blue);
         }
 
-        
+
+
         public void ClearScene()
         {
             Scene.Children.Clear();
         }
 
         //  фигуры со случайными параметрами
-        private void btnCreateRandom_Click(object sender, RoutedEventArgs e)
+        private void btnCreateRandom_Click_tri(object sender, RoutedEventArgs e)
         {
             ClearScene();
 
-            
+
             Point2D p1 = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 50),
                                     rnd.Next(50, (int)Scene.ActualHeight - 50));
             Point2D p2 = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 50),
@@ -79,7 +81,10 @@ namespace Geometry
                                     rnd.Next(50, (int)Scene.ActualHeight - 50));
             triangle = new Triangle(p1, p2, p3);
 
-            
+
+
+
+
             Point2D startPoint = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 150),
                                            rnd.Next(50, (int)Scene.ActualHeight - 150));
             int width = rnd.Next(50, 150);
@@ -88,7 +93,31 @@ namespace Geometry
 
             // отрисовка фигур
             DrawTriangle(triangle);
+
+        }
+
+        private void btnCreateRandom_Click_rect(object sender, EventArgs e)
+        {
+            ClearScene();
+            int Width = rnd.Next(50, 150);
+            int Height = rnd.Next(50, 150);
+            Point2D p1 = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 50),
+                                    rnd.Next(50, (int)Scene.ActualHeight - 50));
+
+            Point2D p2 = new Point2D(p1.getX() + Width, p1.getY());
+            Point2D p3 = new Point2D(p1.getX() + Width, p1.getY() + Height);
+            Point2D p4 = new Point2D(p1.getX(), p1.getY() + Height);
+
+            rectangle = new Rectangle(p1, p2, p3, p4);
+
+            Point2D startPoint = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 150),
+                                           rnd.Next(50, (int)Scene.ActualHeight - 150));
+
             DrawRectangle(rectangle);
+
+
+
+
         }
 
         // создание фигур с пользовательскими параметрами
@@ -120,8 +149,8 @@ namespace Geometry
                 try
                 {
                     string[] paramsRect = rectDialog.Answer.Split(',');
-                    Point2D p1 = new Point2D(int.Parse(paramsRect[0]), int.Parse(paramsRect[1])) ;
-                    Point2D p2 =  new Point2D(int.Parse(paramsRect[2]), int.Parse(paramsRect[3]));
+                    Point2D p1 = new Point2D(int.Parse(paramsRect[0]), int.Parse(paramsRect[1]));
+                    Point2D p2 = new Point2D(int.Parse(paramsRect[2]), int.Parse(paramsRect[3]));
                     Point2D p3 = new Point2D(int.Parse(paramsRect[4]), int.Parse(paramsRect[5]));
                     Point2D p4 = new Point2D(int.Parse(paramsRect[6]), int.Parse(paramsRect[7]));
 
@@ -142,40 +171,40 @@ namespace Geometry
         }
 
 
-        private void btnMove_Click(object sender, RoutedEventArgs e)
-        {
-            if (triangle == null || rectangle == null)
-            {
-                MessageBox.Show("Сначала создайте фигуры!");
-                return;
-            }
+        //private void btnMove_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (triangle == null || rectangle == null)
+        //    {
+        //        MessageBox.Show("Сначала создайте фигуры!");
+        //        return;
+        //    }
 
-            var moveDialog = new InputDialog("Введите координаты треугольника (x1,y1,x2,y2,x3,y3):", "100,100,200,150,150,200");
-            if (moveDialog.ShowDialog() == true)
-            {
-                //try
-                //{
-                //    string[] move = moveDialog.Answer.Split(',');
-                //    int deltaX = int.Parse(move[0]);
-                //    int deltaY = int.Parse(move[1]);
+        //    var moveDialog = new InputDialog("Введите координаты треугольника (x1,y1,x2,y2,x3,y3):", "100,100,200,150,150,200");
+        //    if (moveDialog.ShowDialog() == true)
+        //    //{
+        //        //try
+        //        //{
+        //        //    string[] move = moveDialog.Answer.Split(',');
+        //        //    int deltaX = int.Parse(move[0]);
+        //        //    int deltaY = int.Parse(move[1]);
 
-                //    triangle.addX(deltaX);
-                //    triangle.addY(deltaY);
-                //    rectangle.addX(deltaX);
-                //    rectangle.addY(deltaY);
+        //        //    triangle.addX(deltaX);
+        //        //    triangle.addY(deltaY);
+        //        //    rectangle.addX(deltaX);
+        //        //    rectangle.addY(deltaY);
 
-                //    ClearScene();
-                //    DrawTriangle(triangle);
-                //    DrawRectangle(rectangle);
-                //}
-                //catch
-                //{
-                //    MessageBox.Show("Ошибка в формате данных для перемещения!");
-                //}
-            }
-        }
+        //        //    ClearScene();
+        //        //    DrawTriangle(triangle);
+        //        //    DrawRectangle(rectangle);
+        //        //}
+        //        //catch
+        //        //{
+        //        //    MessageBox.Show("Ошибка в формате данных для перемещения!");
+        //        //}
+        //    }
+        //}
 
-        
+
         private void btnClear_Click(object sender, RoutedEventArgs e)
         {
             ClearScene();
@@ -195,10 +224,19 @@ namespace Geometry
         private void y_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Scene.Children.Clear();
-            triangle.addY((int)e.NewValue - (int)e.OldValue);
-            rectangle.addY((int)e.NewValue - (int)e.OldValue);
-            DrawTriangle(triangle);
-            DrawRectangle(rectangle);
+            if (triangle != null)
+            {
+                triangle.addY((int)e.NewValue - (int)e.OldValue);
+                DrawTriangle(triangle);
+            }
+            if (rectangle != null)
+            {
+                rectangle.addY((int)e.NewValue - (int)e.OldValue);
+                DrawRectangle(rectangle);
+            }
+
+
+
         }
     }
 }
