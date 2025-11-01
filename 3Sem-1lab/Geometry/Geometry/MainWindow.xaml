@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+        
         <StackPanel Orientation="Vertical">
             <Slider x:Name="x" Margin="0, 5, 0, 0" Minimum="-10" Maximum="10" ValueChanged="x_ValueChanged" Value=" 0"/>
 

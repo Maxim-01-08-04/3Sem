@@ -11,34 +11,23 @@ namespace Geometry
     {
         public string Answer { get; set; }
 
-        //public InputDialog(string question, string defaultAnswer = "")
-        //{
-        //    InitializeComponent();
-        //    lblQuestion.Content = question;
-        //    txtAnswer.Text = defaultAnswer;
-        //}
-
-        //private void btnDialogOk_Click(object sender, RoutedEventArgs e)
-        //{
-        //    Answer = txtAnswer.Text;
-        //    DialogResult = true;
-        //}
-
-        //private void Window_ContentRendered(object sender, System.EventArgs e)
-        //{
-        //    txtAnswer.SelectAll();
-        //    txtAnswer.Focus();
-        //}
-
-        private void y_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        public InputDialog(string question, string defaultAnswer = "")
         {
-            MessageBox.Show("ksdjfhks");
+            InitializeComponent();
+            lblQuestion.Content = question;
+            txtAnswer.Text = defaultAnswer;
         }
 
-        private void x_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void btnDialogOk_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("ksdjfhks");
+            Answer = txtAnswer.Text;
+            DialogResult = true;
+        }
 
+        private void Window_ContentRendered(object sender, System.EventArgs e)
+        {
+            txtAnswer.SelectAll();
+            txtAnswer.Focus();
         }
     }
 }

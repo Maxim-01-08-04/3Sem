@@ -84,7 +84,7 @@ namespace Geometry
                                            rnd.Next(50, (int)Scene.ActualHeight - 150));
             int width = rnd.Next(50, 150);
             int height = rnd.Next(50, 150);
-            rectangle = new Rectangle(startPoint, width, height);
+            //rectangle = new Rectangle(startPoint, width, height);
 
             // отрисовка фигур
             DrawTriangle(triangle);
@@ -94,8 +94,8 @@ namespace Geometry
         // создание фигур с пользовательскими параметрами
         private void btnCreateCustom_Click(object sender, RoutedEventArgs e)
         {
-            
-            var triangleDialog = new InputDialog();
+
+            var triangleDialog = new InputDialog("Введите координаты треугольника (x1,y1,x2,y2,x3,y3):", "100,100,200,150,150,200");
             if (triangleDialog.ShowDialog() == true)
             {
                 try
@@ -113,15 +113,21 @@ namespace Geometry
                 }
             }
 
-            
-            var rectDialog = new InputDialog();
+
+            var rectDialog = new InputDialog("Введите параметры прямоугольника (x,y,width,height):", "300,300,100,80,60,80,50,40");
             if (rectDialog.ShowDialog() == true)
             {
                 try
                 {
                     string[] paramsRect = rectDialog.Answer.Split(',');
-                    rectangle = new Rectangle(int.Parse(paramsRect[0]), int.Parse(paramsRect[1]),
-                                            int.Parse(paramsRect[2]), int.Parse(paramsRect[3]));
+                    Point2D p1 = new Point2D(int.Parse(paramsRect[0]), int.Parse(paramsRect[1])) ;
+                    Point2D p2 =  new Point2D(int.Parse(paramsRect[2]), int.Parse(paramsRect[3]));
+                    Point2D p3 = new Point2D(int.Parse(paramsRect[4]), int.Parse(paramsRect[5]));
+                    Point2D p4 = new Point2D(int.Parse(paramsRect[6]), int.Parse(paramsRect[7]));
+
+                    //rectangle = new Rectangle(int.Parse(paramsRect[0]), int.Parse(paramsRect[1]),
+                    //                        int.Parse(paramsRect[2]), int.Parse(paramsRect[3]));
+                    rectangle = new Rectangle(p1, p2, p3, p4);
                 }
                 catch
                 {
@@ -135,7 +141,7 @@ namespace Geometry
             DrawRectangle(rectangle);
         }
 
-        
+
         private void btnMove_Click(object sender, RoutedEventArgs e)
         {
             if (triangle == null || rectangle == null)
@@ -144,7 +150,7 @@ namespace Geometry
                 return;
             }
 
-            var moveDialog = new InputDialog();
+            var moveDialog = new InputDialog("Введите координаты треугольника (x1,y1,x2,y2,x3,y3):", "100,100,200,150,150,200");
             if (moveDialog.ShowDialog() == true)
             {
                 //try
@@ -180,8 +186,8 @@ namespace Geometry
         private void x_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Scene.Children.Clear();
-            triangle.addX((int)e.OldValue - (int)e.NewValue * -1);
-            rectangle.addX((int)e.OldValue - (int)e.NewValue * -1);
+            triangle.addX((int)e.NewValue - (int)e.OldValue);
+            rectangle.addX((int)e.NewValue - (int)e.OldValue);
             DrawTriangle(triangle);
             DrawRectangle(rectangle);
         }
@@ -189,8 +195,8 @@ namespace Geometry
         private void y_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Scene.Children.Clear();
-            triangle.addY((int)e.OldValue - (int)e.NewValue * -1);
-            rectangle.addY((int)e.OldValue - (int)e.NewValue * -1);
+            triangle.addY((int)e.NewValue - (int)e.OldValue);
+            rectangle.addY((int)e.NewValue - (int)e.OldValue);
             DrawTriangle(triangle);
             DrawRectangle(rectangle);
         }
