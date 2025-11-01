@@ -20,7 +20,7 @@
 
         <StackPanel Orientation="Vertical">
             <Slider x:Name="x" Margin="0, 5, 0, 0" Minimum="-10" Maximum="10" ValueChanged="x_ValueChanged" Value=" 0"/>
-
+ 
             <Slider x:Name="y"  Margin="0, 15, 0, 0" Minimum="-10" Maximum="10" ValueChanged="y_ValueChanged" Value="0"/>
         </StackPanel>
     </Grid>
