@@ -46,7 +46,7 @@ namespace Geometry
         // ффункция рисования треугольника
         public void DrawTriangle(Triangle tr)
         {
-            DrawLine(tr.getP1(), tr.getP2(), Brushes.Red);
+            DrawLine(tr.getP1(), tr.getP2(), Brushes.Red); //нет объекта
             DrawLine(tr.getP2(), tr.getP3(), Brushes.Red);
             DrawLine(tr.getP3(), tr.getP1(), Brushes.Red);
         }
@@ -54,7 +54,7 @@ namespace Geometry
         // функция рисования прямоугольника
         public void DrawRectangle(Rectangle rect)
         {
-            DrawLine(rect.getP1(), rect.getP2(), Brushes.Blue);
+            DrawLine(rect.getP1(), rect.getP2(), Brushes.Blue); //нет объекта
             DrawLine(rect.getP2(), rect.getP3(), Brushes.Blue);
             DrawLine(rect.getP3(), rect.getP4(), Brushes.Blue);
             DrawLine(rect.getP4(), rect.getP1(), Brushes.Blue);
@@ -82,7 +82,7 @@ namespace Geometry
             triangle = new Triangle(p1, p2, p3);
 
 
-
+            rectangle = null;
 
 
             Point2D startPoint = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 150),
@@ -109,6 +109,7 @@ namespace Geometry
             Point2D p4 = new Point2D(p1.getX(), p1.getY() + Height);
 
             rectangle = new Rectangle(p1, p2, p3, p4);
+            triangle = null;
 
             Point2D startPoint = new Point2D(rnd.Next(50, (int)Scene.ActualWidth - 150),
                                            rnd.Next(50, (int)Scene.ActualHeight - 150));
@@ -137,7 +138,7 @@ namespace Geometry
                 }
                 catch
                 {
-                    MessageBox.Show("Ошибка в формате данных для треугольника!");
+                    MessageBox.Show("неверный формат данных");
                     return;
                 }
             }
@@ -160,7 +161,7 @@ namespace Geometry
                 }
                 catch
                 {
-                    MessageBox.Show("Ошибка в формате данных для прямоугольника!");
+                    MessageBox.Show("неверный формат данных");
                     return;
                 }
             }
@@ -215,10 +216,20 @@ namespace Geometry
         private void x_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Scene.Children.Clear();
-            triangle.addX((int)e.NewValue - (int)e.OldValue);
-            rectangle.addX((int)e.NewValue - (int)e.OldValue);
-            DrawTriangle(triangle);
-            DrawRectangle(rectangle);
+            if (triangle != null)
+            {
+                triangle.addX((int)e.NewValue - (int)e.OldValue);
+                DrawTriangle(triangle);
+            }
+            //triangle.addX((int)e.NewValue - (int)e.OldValue);  //не работает перемещение по горизонтали
+            if (rectangle != null)
+            {
+                rectangle.addX((int)e.NewValue - (int)e.OldValue);
+                DrawRectangle(rectangle);
+            }
+            //rectangle.addX((int)e.NewValue - (int)e.OldValue);  //не работает перемещение по горизонтали
+            //DrawTriangle(triangle);
+            //DrawRectangle(rectangle);
         }
 
         private void y_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
