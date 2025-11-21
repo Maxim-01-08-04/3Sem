@@ -19,150 +19,216 @@ using Microsoft.Win32;
 
 namespace EnemyEditor
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private CIconList iconList;
-        private CEnemyTemplateList enemyList;
+        private CEnemyTemplateList enemyList = new CEnemyTemplateList();
+        private List<EnemyIcon> enemyIcons = new List<EnemyIcon>();
         private string selectedIconName = "";
 
         public MainWindow()
         {
             InitializeComponent();
-            iconList = new CIconList(IconsCanvasMain);
-            enemyList = new CEnemyTemplateList();
             UpdateEnemiesList();
-
-            string iconsPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "icons");
-            if (Directory.Exists(iconsPath))
-            {
-                iconList.LoadIcons(iconsPath);
-            }
-
-            UpdateEnemiesList(); 
         }
 
-           
-
-
-        
-
-        private void btnLoadIcons_Click(object sender, RoutedEventArgs e)
+        private void LoadIconsButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new System.Windows.Forms.FolderBrowserDialog();
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            var dialog = new OpenFileDialog();
+            dialog.Title = "Выберите папку с иконками";
+            dialog.ValidateNames = false;
+            dialog.CheckFileExists = false;
+            dialog.CheckPathExists = true;
+            dialog.FileName = "Выберите папку";
+
+            if (dialog.ShowDialog() == true)
             {
-                iconList.LoadIcons(dialog.SelectedPath);
+                string folderPath = System.IO.Path.GetDirectoryName(dialog.FileName);
+                LoadIconsFromFolder(folderPath);
             }
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        public void LoadIconsFromFolder(string path)
         {
-            Point mousePosition = Mouse.GetPosition(IconsCanvasMain);
-            selectedIconName = iconList.GetIconNameAtPoint(mousePosition);
-            if (selectedIconName != null)
-            {
-                txtIconName.Text = selectedIconName;
-            }
-        }
-
-        private void btnAddEnemy_Click(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtEnemyName.Text) || string.IsNullOrWhiteSpace(txtIconName.Text))
-            {
-                System.Windows.MessageBox.Show("Заполните название и выберите иконку!");
-                return;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtBaseLife.Text) || string.IsNullOrWhiteSpace(txtBaseGold.Text) ||
-                string.IsNullOrWhiteSpace(txtLifeModifier.Text) || string.IsNullOrWhiteSpace(txtGoldModifier.Text) ||
-                string.IsNullOrWhiteSpace(txtSpawnChance.Text))
-            {
-                MessageBox.Show("Заполните все числовые поля!");
-                return;
-            }
-
             try
             {
-                CEnemyTemplate enemy = new CEnemyTemplate(
-                    txtEnemyName.Text,
-                    txtIconName.Text,
-                    int.Parse(txtBaseLife.Text),
-                    double.Parse(txtLifeModifier.Text),
-                    int.Parse(txtBaseGold.Text),
-                    double.Parse(txtGoldModifier.Text),
-                    double.Parse(txtSpawnChance.Text)
+                enemyIcons.Clear();
+                IconsListBox.Items.Clear();
+
+                string filter = "*.png";
+                string[] files = System.IO.Directory.GetFiles(path, filter);
+
+                foreach (string file in files)
+                {
+                    var icon = new EnemyIcon
+                    {
+                        Name = System.IO.Path.GetFileName(file),
+                        ImagePath = file
+                    };
+                    enemyIcons.Add(icon);
+
+                    // Создаем Image для ListBox
+                    var image = new Image()
+                    {
+                        Source = new System.Windows.Media.Imaging.BitmapImage(
+                            new Uri(icon.ImagePath)),
+                        Height = 50,
+                        Tag = icon.Name // Сохраняем имя иконки в Tag
+                    };
+                    IconsListBox.Items.Add(image);
+                }
+
+                MessageBox.Show($"Загружено {files.Length} иконок", "Успех");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки иконок: {ex.Message}", "Ошибка");
+            }
+        }
+
+        private void IconsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IconsListBox.SelectedItem is Image selectedImage && selectedImage != null)
+            {
+                // Обновляем главную иконку
+                MainEnemyIcon.Source = selectedImage.Source;
+
+                // Получаем имя иконки из Tag
+                selectedIconName = selectedImage.Tag as string;
+                IconNameTextBlock.Text = selectedIconName;
+            }
+        }
+
+        private void AddEnemyButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(NameTextBox.Text))
+                {
+                    MessageBox.Show("Введите название противника", "Ошибка");
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(selectedIconName))
+                {
+                    MessageBox.Show("Выберите иконку", "Ошибка");
+                    return;
+                }
+
+                // Проверяем и устанавливаем значения по умолчанию для пустых полей
+                int health = string.IsNullOrWhiteSpace(HealthTextBox.Text) ? 100 : int.Parse(HealthTextBox.Text);
+                double healthMod = string.IsNullOrWhiteSpace(HealthModTextBox.Text) ? 1.0 : double.Parse(HealthModTextBox.Text);
+                int gold = string.IsNullOrWhiteSpace(GoldTextBox.Text) ? 10 : int.Parse(GoldTextBox.Text);
+                double goldMod = string.IsNullOrWhiteSpace(GoldModTextBox.Text) ? 1.0 : double.Parse(GoldModTextBox.Text);
+                double spawnChance = string.IsNullOrWhiteSpace(SpawnChanceTextBox.Text) ? 0.5 : double.Parse(SpawnChanceTextBox.Text);
+
+                enemyList.AddEnemy(
+                    NameTextBox.Text,
+                    selectedIconName,
+                    health,
+                    healthMod,
+                    gold,
+                    goldMod,
+                    spawnChance
                 );
 
-                enemyList.AddEnemy(enemy);
                 UpdateEnemiesList();
                 ClearForm();
+                MessageBox.Show("Противник добавлен", "Успех");
             }
-            catch
+            catch (FormatException)
             {
-                System.Windows.MessageBox.Show("Ошибка в формате данных!");
+                MessageBox.Show("Проверьте правильность введенных числовых значений", "Ошибка формата");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка добавления: {ex.Message}", "Ошибка");
             }
         }
 
-        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (lstEnemies.SelectedIndex != -1)
+            try
             {
-                enemyList.RemoveEnemyAt(lstEnemies.SelectedIndex);
+                var dialog = new SaveFileDialog();
+                dialog.FileName = "enemies";
+                dialog.DefaultExt = ".json";
+                dialog.Filter = "JSON files (.json)|*.json";
+
+                if (dialog.ShowDialog() == true)
+                {
+                    enemyList.SaveToJson(dialog.FileName);
+                    MessageBox.Show("Список сохранен", "Успех");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка сохранения: {ex.Message}", "Ошибка");
+            }
+        }
+
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var dialog = new OpenFileDialog();
+                dialog.DefaultExt = ".json";
+                dialog.Filter = "JSON files (.json)|*.json";
+
+                if (dialog.ShowDialog() == true)
+                {
+                    enemyList.LoadFromJson(dialog.FileName);
+                    UpdateEnemiesList();
+                    MessageBox.Show("Список загружен", "Успех");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка загрузки: {ex.Message}", "Ошибка");
+            }
+        }
+
+        private void DeleteEnemyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (EnemiesListBox.SelectedIndex != -1)
+            {
+                enemyList.DeleteEnemyByIndex(EnemiesListBox.SelectedIndex);
                 UpdateEnemiesList();
             }
-        }
-
-        private void btnSave_Click(object sender, RoutedEventArgs e)
-        {
-            Microsoft.Win32.SaveFileDialog dialog = new Microsoft.Win32.SaveFileDialog();
-            dialog.FileName = "enemies";
-            dialog.DefaultExt = ".json";
-            dialog.Filter = "JSON files (.json)|*.json";
-
-            if (dialog.ShowDialog() == true)
+            else
             {
-                enemyList.SaveToFile(dialog.FileName);
-                System.Windows.MessageBox.Show("Список сохранен!");
+                MessageBox.Show("Выберите противника для удаления", "Ошибка");
             }
         }
 
-        private void btnLoad_Click(object sender, RoutedEventArgs e)
+        private void EnemiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dialog = new Microsoft.Win32.OpenFileDialog();
-            dialog.FileName = "enemies";
-            dialog.DefaultExt = ".json";
-            dialog.Filter = "JSON files (.json)|*.json";
-
-            if (dialog.ShowDialog() == true)
+            if (EnemiesListBox.SelectedIndex != -1)
             {
-                enemyList.LoadFromFile(dialog.FileName);
-                UpdateEnemiesList();
-                System.Windows.MessageBox.Show("Список загружен!");
+                var enemy = enemyList.GetEnemyByIndex(EnemiesListBox.SelectedIndex);
+                if (enemy != null)
+                {
+                    // Можно добавить функционал просмотра деталей выбранного противника
+                }
             }
         }
 
         private void UpdateEnemiesList()
         {
-            lstEnemies.Items.Clear();
-            foreach (var enemy in enemyList.GetEnemies())
-            {
-                lstEnemies.Items.Add($"{enemy.GetName()} (Иконка: {enemy.GetIconName()})");
-            }
+            EnemiesListBox.ItemsSource = null;
+            EnemiesListBox.ItemsSource = enemyList.GetEnemies();
         }
 
         private void ClearForm()
         {
-            txtEnemyName.Clear();
-            txtIconName.Clear();
-            txtBaseLife.Clear();
-            txtLifeModifier.Clear();
-            txtBaseGold.Clear();
-            txtGoldModifier.Clear();
-            txtSpawnChance.Clear();
+            NameTextBox.Clear();
+            HealthTextBox.Clear();
+            HealthModTextBox.Clear();
+            GoldTextBox.Clear();
+            GoldModTextBox.Clear();
+            SpawnChanceTextBox.Clear();
+            IconNameTextBlock.Text = "";
             selectedIconName = "";
+            MainEnemyIcon.Source = null;
         }
     }
 }
