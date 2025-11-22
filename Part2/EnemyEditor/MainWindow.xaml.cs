@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,6 +30,7 @@ namespace EnemyEditor
         {
             InitializeComponent();
             UpdateEnemiesList();
+
         }
 
         private void LoadIconsButton_Click(object sender, RoutedEventArgs e)
@@ -66,13 +68,12 @@ namespace EnemyEditor
                     };
                     enemyIcons.Add(icon);
 
-                    // Создаем Image для ListBox
                     var image = new Image()
                     {
                         Source = new System.Windows.Media.Imaging.BitmapImage(
                             new Uri(icon.ImagePath)),
                         Height = 50,
-                        Tag = icon.Name // Сохраняем имя иконки в Tag
+                        Tag = icon.Name 
                     };
                     IconsListBox.Items.Add(image);
                 }
@@ -89,10 +90,8 @@ namespace EnemyEditor
         {
             if (IconsListBox.SelectedItem is Image selectedImage && selectedImage != null)
             {
-                // Обновляем главную иконку
                 MainEnemyIcon.Source = selectedImage.Source;
 
-                // Получаем имя иконки из Tag
                 selectedIconName = selectedImage.Tag as string;
                 IconNameTextBlock.Text = selectedIconName;
             }
@@ -114,7 +113,6 @@ namespace EnemyEditor
                     return;
                 }
 
-                // Проверяем и устанавливаем значения по умолчанию для пустых полей
                 int health = string.IsNullOrWhiteSpace(HealthTextBox.Text) ? 100 : int.Parse(HealthTextBox.Text);
                 double healthMod = string.IsNullOrWhiteSpace(HealthModTextBox.Text) ? 1.0 : double.Parse(HealthModTextBox.Text);
                 int gold = string.IsNullOrWhiteSpace(GoldTextBox.Text) ? 10 : int.Parse(GoldTextBox.Text);
@@ -207,7 +205,6 @@ namespace EnemyEditor
                 var enemy = enemyList.GetEnemyByIndex(EnemiesListBox.SelectedIndex);
                 if (enemy != null)
                 {
-                    // Можно добавить функционал просмотра деталей выбранного противника
                 }
             }
         }
@@ -216,6 +213,10 @@ namespace EnemyEditor
         {
             EnemiesListBox.ItemsSource = null;
             EnemiesListBox.ItemsSource = enemyList.GetEnemies();
+
+            EnemiesListBox.DisplayMemberPath = "Name";
+            //EnemiesListBox.DisplayMemberPath = nameof(CEnemyTemplate.Name);
+
         }
 
         private void ClearForm()
@@ -230,5 +231,6 @@ namespace EnemyEditor
             selectedIconName = "";
             MainEnemyIcon.Source = null;
         }
+
     }
 }

@@ -21,7 +21,7 @@ namespace EnemyEditor
 
         public CEnemyTemplate GetEnemyByName(string name)
         {
-            return enemies.Find(e => e.Name() == name);
+            return enemies.Find(e => e.Name == name);
         }
 
         public CEnemyTemplate GetEnemyByIndex(int id)
@@ -33,7 +33,7 @@ namespace EnemyEditor
 
         public void DeleteEnemyByName(string name)
         {
-            enemies.RemoveAll(e => e.Name() == name);
+            enemies.RemoveAll(e => e.Name == name);
         }
 
         public void DeleteEnemyByIndex(int id)
@@ -47,7 +47,7 @@ namespace EnemyEditor
             List<string> names = new List<string>();
             foreach (var enemy in enemies)
             {
-                names.Add(enemy.Name());
+                names.Add(enemy.Name);
             }
             return names;
         }
@@ -75,7 +75,7 @@ namespace EnemyEditor
             try
             {
                 string jsonFromFile = System.IO.File.ReadAllText(path);
-                using JsonDocument doc = JsonDocument.Parse(jsonFromFile);
+                JsonDocument doc = JsonDocument.Parse(jsonFromFile);
 
                 enemies.Clear();
 

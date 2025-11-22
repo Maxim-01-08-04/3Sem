@@ -9,7 +9,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- Левая панель - иконки -->
         <StackPanel Grid.Column="0" Margin="10">
             <TextBlock Text="Иконки противников" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
 
@@ -24,7 +23,6 @@
             <Image x:Name="MainEnemyIcon" Height="100" Margin="0,5,0,10" Stretch="Uniform"/>
         </StackPanel>
 
-        <!-- Правая панель - редактирование противников -->
         <StackPanel Grid.Column="1" Margin="10">
             <TextBlock Text="Редактор противников" FontWeight="Bold" FontSize="14" Margin="0,0,0,10"/>
 
@@ -73,6 +71,7 @@
                         Click="SaveButton_Click" Margin="0,0,10,0" Width="100"/>
                 <Button x:Name="LoadButton" Content="Загрузить список" 
                         Click="LoadButton_Click" Width="100"/>
+
             </StackPanel>
 
             <TextBlock Text="Список противников:" FontWeight="Bold"/>
