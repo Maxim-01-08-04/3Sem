@@ -1,0 +1,80 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace EnemyEditor
+{
+    public class Player
+    {
+        private int lvl;
+        private BigNumber gold;
+        private BigNumber damage;
+        private double damageModifier;
+        private BigNumber upgradeCost;
+        private double upgradeModifier;
+
+        public int Lvl { get => lvl; private set => lvl = value; }
+        public BigNumber Gold { get => gold; private set => gold = value; }
+        public BigNumber Damage { get => damage; private set => damage = value; }
+        public double DamageModifier { get => damageModifier; private set => damageModifier = value; }
+        public BigNumber UpgradeCost { get => upgradeCost; private set => upgradeCost = value; }
+        public double UpgradeModifier { get => upgradeModifier; private set => upgradeModifier = value; }
+
+        public Player()
+        {
+            Lvl = 1;
+            Gold = new BigNumber("0");
+            Damage = new BigNumber("1");
+            DamageModifier = 1.2;
+            UpgradeCost = new BigNumber("10");
+            UpgradeModifier = 1.1;
+        }
+
+        public void AddGold(BigNumber amount)
+        {
+            gold = gold + amount;
+        }
+
+        public bool TryUpgrade()
+        {
+            if (gold >= upgradeCost)
+            {
+                gold = gold - upgradeCost;
+                lvl++;
+                RecalculateStats();
+                return true;
+            }
+            return false;
+        }
+
+        public BigNumber DealDamage()
+        {
+            return damage;
+        }
+
+        private void RecalculateStats()
+        {
+            damage = damage * damageModifier;
+            upgradeCost = CalculateNextUpgradeCost();
+        }
+
+        private BigNumber CalculateNextUpgradeCost()
+        {
+            double multiplier = upgradeModifier * lvl;
+            return upgradeCost * multiplier;
+        }
+
+        private bool TrySpendGold(BigNumber amount)
+        {
+            if (gold >= amount)
+            {
+                gold = gold - amount;
+                return true;
+            }
+            return false;
+        }
+    }
+}
+

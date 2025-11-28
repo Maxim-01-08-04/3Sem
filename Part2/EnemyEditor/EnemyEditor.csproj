@@ -102,15 +102,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BigNumber.cs" />
     <Compile Include="CEnemyTemplate.cs" />
     <Compile Include="CEnemyTemplateList.cs" />
+    <Compile Include="Enemy.cs" />
     <Compile Include="EnemyIcon.cs" />
+    <Compile Include="EnemyManager.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
