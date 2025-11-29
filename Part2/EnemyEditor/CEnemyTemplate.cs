@@ -9,7 +9,7 @@ namespace EnemyEditor
 {
     public class CEnemyTemplate
     {
-        [JsonInclude]
+        //[JsonInclude]
         private string name;
 
         public string Name
@@ -57,4 +57,5 @@ namespace EnemyEditor
         //}
 
     }
+
 }
