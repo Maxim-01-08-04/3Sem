@@ -102,6 +102,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AttackCooldownTracker.cs" />
     <Compile Include="BigNumber.cs" />
     <Compile Include="CEnemyTemplate.cs" />
     <Compile Include="CEnemyTemplateList.cs" />

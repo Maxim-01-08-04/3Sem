@@ -154,25 +154,16 @@ namespace EnemyEditor
             if (multiplier == 0)
                 return new BigNumber("0");
 
-            BigNumber result = new BigNumber("0");
-            BigNumber current = a.Clone();
-
-            
-            int iterations = (int)multiplier;
-            double fraction = multiplier - iterations;
-
-            for (int i = 0; i < iterations; i++)
+            try
             {
-                result = result + current;
+                double aValue = double.Parse(a.ToString());
+                double resultValue = aValue * multiplier;
+                return new BigNumber(((int)resultValue).ToString());
             }
-
-            if (fraction > 0)
+            catch
             {
-                BigNumber fractionalPart = a / (1.0 / fraction);
-                result = result + fractionalPart;
+                return a;
             }
-
-            return result;
         }
 
         public static BigNumber operator /(BigNumber a, double divisor)

@@ -88,8 +88,7 @@
                 </Grid>
             </TabItem>
 
-            <!-- Новая вкладка игры -->
-            <TabItem Header="Игра-Кликер">
+            <TabItem Header="Кликер">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>

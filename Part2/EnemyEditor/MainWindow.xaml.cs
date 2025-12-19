@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Microsoft.Win32;
 
 
@@ -31,6 +32,8 @@ namespace EnemyEditor
         private Player player;
         private Enemy currentEnemy;
         private EnemyManager enemyManager;
+        private GameController gameController;
+        private DispatcherTimer gameTimer;
 
         public MainWindow()
         {
@@ -43,6 +46,7 @@ namespace EnemyEditor
         {
             player = new Player();
             enemyManager = new EnemyManager();
+            InitializeCollectables();
 
             // Загружаем существующие шаблоны если они есть
             if (enemyList.GetEnemies().Count > 0)
@@ -57,6 +61,148 @@ namespace EnemyEditor
             }
 
             UpdateGameUI();
+        }
+        private void InitializeCollectables()
+        {
+            // Получаем размер области противника для спавна бонусов
+            var enemyArea = EnemyImage.Parent as Border;
+            if (enemyArea != null)
+            {
+                Size sceneSize = new Size(enemyArea.ActualWidth, enemyArea.ActualHeight);
+                gameController = new GameController(sceneSize);
+                gameController.StartGame();
+            }
+            gameTimer = new DispatcherTimer();
+            gameTimer.Interval = TimeSpan.FromMilliseconds(100);
+            gameTimer.Tick += GameTimer_Tick;
+            gameTimer.Start();
+        }
+        private void GameTimer_Tick(object sender, EventArgs e)
+        {
+            // Обновляем перезарядку игрока
+            player.UpdateCooldown(0.1);
+
+            // Обновляем UI перезарядки
+            UpdateCooldownUI();
+
+            // Обновляем активные эффекты
+            UpdateActiveEffects();
+
+            // Отрисовываем собираемые объекты
+            DrawCollectables();
+        }
+
+        private void UpdateCooldownUI()
+        {
+            CooldownProgressBar.Value = player.CooldownProgress;
+            CooldownText.Text = player.CanAttack ? "Готово!" :
+                $"Перезарядка: {player.CurrentCooldown:F1}с";
+            AttackButton.IsEnabled = player.CanAttack && !currentEnemy.IsDead;
+        }
+
+        private void UpdateActiveEffects()
+        {
+            ActiveEffectsPanel.Children.Clear();
+
+            // Создаем визуальные элементы для активных эффектов
+            if (gameController.DamageMultiplier > 1.0)
+            {
+                var effect = CreateEffectBadge("Урон x" + gameController.DamageMultiplier.ToString("F1"), Brushes.Red);
+                ActiveEffectsPanel.Children.Add(effect);
+            }
+
+            if (gameController.CooldownMultiplier < 1.0)
+            {
+                var effect = CreateEffectBadge("Перезар. x" + gameController.CooldownMultiplier.ToString("F1"), Brushes.Blue);
+                ActiveEffectsPanel.Children.Add(effect);
+            }
+
+            if (gameController.LifetimeMultiplier > 1.0)
+            {
+                var effect = CreateEffectBadge("Время x" + gameController.LifetimeMultiplier.ToString("F1"), Brushes.Green);
+                ActiveEffectsPanel.Children.Add(effect);
+            }
+        }
+
+        private Border CreateEffectBadge(string text, Brush color)
+        {
+            return new Border
+            {
+                Background = color,
+                CornerRadius = new CornerRadius(5),
+                Padding = new Thickness(5, 2, 5, 2),
+                Margin = new Thickness(2),
+                Child = new TextBlock
+                {
+                    Text = text,
+                    Foreground = Brushes.White,
+                    FontSize = 10,
+                    FontWeight = FontWeights.Bold
+                }
+            };
+        }
+
+        private void DrawCollectables()
+        {
+            // Очищаем старые объекты
+            var enemyArea = EnemyImage.Parent as Border;
+            var canvas = enemyArea?.Child as Canvas;
+
+            if (canvas == null)
+            {
+                canvas = new Canvas();
+                if (enemyArea != null)
+                {
+                    enemyArea.Child = canvas;
+                    var stackPanel = new StackPanel();
+                    stackPanel.Children.Add(EnemyImage);
+                    stackPanel.Children.Add(canvas);
+                    enemyArea.Child = stackPanel;
+                }
+            }
+
+            canvas.Children.Clear();
+
+            // Добавляем все собираемые объекты
+            foreach (var collectable in gameController.Collectables)
+            {
+                var ellipse = collectable.Sprite;
+                Canvas.SetLeft(ellipse, collectable.Position.X);
+                Canvas.SetTop(ellipse, collectable.Position.Y);
+                canvas.Children.Add(ellipse);
+            }
+
+            // Добавляем EnemyImage поверх всего
+            canvas.Children.Add(EnemyImage);
+        }
+
+        // Обработчик клика по области противника
+        private void EnemyArea_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var position = e.GetPosition(EnemyImage.Parent as IInputElement);
+
+            // Проверяем клик по собираемым объектам
+            gameController.HandleClick(position, player);
+
+            // Если кликнули по самому противнику
+            if (player.CanAttack && !currentEnemy.IsDead)
+            {
+                AttackButton_Click(sender, null);
+            }
+        }
+
+        // Обработчик улучшения перезарядки
+        private void UpgradeCooldownButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (player.TryUpgradeCooldown())
+            {
+                MessageBox.Show($"Перезарядка улучшена!\nНовая перезарядка: {player.AttackCooldown:F2}с", "Успех");
+                UpdateGameUI();
+            }
+            else
+            {
+                MessageBox.Show("Недостаточно золота!", "Ошибка");
+            }
         }
 
         private void UpdateGameUI()
@@ -117,14 +263,15 @@ namespace EnemyEditor
             {
                 if (currentEnemy.IsDead)
                 {
-                    // Создаем нового противника
                     currentEnemy = enemyManager.GetRandomEnemy();
                     UpdateGameUI();
                     return;
                 }
 
-                BigNumber damage = player.DealDamage();
-                bool isDefeated = currentEnemy.TakeDamage(damage, out BigNumber reward);
+                BigNumber baseDamage = player.DealDamage();
+                BigNumber finalDamage = baseDamage * gameController.DamageMultiplier;
+
+                bool isDefeated = currentEnemy.TakeDamage(finalDamage, out BigNumber reward);
 
                 if (isDefeated)
                 {
