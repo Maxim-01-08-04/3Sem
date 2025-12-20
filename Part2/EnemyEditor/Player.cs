@@ -23,6 +23,8 @@ namespace EnemyEditor
         public double CurrentCooldown => currentCooldown;
         public double CooldownProgress => currentCooldown / attackCooldown * 100;
 
+
+
         public int Lvl { get => lvl; private set => lvl = value; }
         public BigNumber Gold { get => gold; private set => gold = value; }
         public BigNumber Damage { get => damage; private set => damage = value; }
@@ -34,11 +36,14 @@ namespace EnemyEditor
         {
             Lvl = 1;
             Gold = new BigNumber("0");
-            Damage = new BigNumber("1");
+            Damage = new BigNumber("10");
             DamageModifier = 1.2;
             UpgradeCost = new BigNumber("10");
             UpgradeModifier = 1.1;
         }
+
+
+
         public BigNumber DealDamage()
         {
             if (!canAttack)
@@ -112,13 +117,27 @@ namespace EnemyEditor
 
         private void RecalculateStats()
         {
+            if (damage == null)
+            {
+                damage = new BigNumber("1");
+            }
+
             damage = damage * damageModifier;
+
             upgradeCost = CalculateNextUpgradeCost();
+
+            Console.WriteLine($"Уровень: {lvl}, Урон: {damage}, Модификатор: {damageModifier}");
         }
 
         private BigNumber CalculateNextUpgradeCost()
         {
             double multiplier = upgradeModifier * lvl;
+
+            if (upgradeCost == null)
+            {
+                upgradeCost = new BigNumber("10");
+            }
+
             return upgradeCost * multiplier;
         }
 
@@ -131,6 +150,8 @@ namespace EnemyEditor
             }
             return false;
         }
+
+
     }
 }
 

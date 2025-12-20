@@ -60,15 +60,13 @@ namespace EnemyEditor
             if (currentLifetime <= 0)
             {
                 isActive = false;
-                return true; // Время жизни закончилось
+                return true; 
             }
             return false;
         }
 
-        // Абстрактный метод для обработки клика
         public abstract void OnClick(Player player, GameController controller);
 
-        // Виртуальный метод для получения очков (может быть переопределен)
         public virtual double GetPointsValue()
         {
             return 0;

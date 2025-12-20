@@ -32,7 +32,6 @@ namespace EnemyEditor
 
             if (!Directory.Exists(folderPath)) return;
 
-            // Загружаем файлы из всех подпапок
             string[] pngFiles = Directory.GetFiles(folderPath, "*.png", SearchOption.AllDirectories);
 
             int x = 10;

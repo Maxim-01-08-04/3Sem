@@ -9,7 +9,6 @@ namespace EnemyEditor
 {
     public class CEnemyTemplate
     {
-        //[JsonInclude]
         private string name;
 
         public string Name
@@ -43,7 +42,6 @@ namespace EnemyEditor
             this.spawnChance = spawnChance;
         }
 
-        //public string Name() => name;
         public string IconName() => iconName;
         public int Baselife() => baseline;
         public double LifeModifier() => lifeModifier;

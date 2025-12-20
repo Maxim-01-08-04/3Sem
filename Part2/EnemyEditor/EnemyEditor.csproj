@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -104,11 +104,19 @@
     </Compile>
     <Compile Include="AttackCooldownTracker.cs" />
     <Compile Include="BigNumber.cs" />
+    <Compile Include="CCollectable.cs" />
+    <Compile Include="CCooldownReducer.cs" />
+    <Compile Include="CDamageBooster.cs" />
     <Compile Include="CEnemyTemplate.cs" />
     <Compile Include="CEnemyTemplateList.cs" />
+    <Compile Include="CIcon.cs" />
+    <Compile Include="CIconList.cs" />
+    <Compile Include="CPointGiver.cs" />
+    <Compile Include="CTimeExtender.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="EnemyIcon.cs" />
     <Compile Include="EnemyManager.cs" />
+    <Compile Include="GameController.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

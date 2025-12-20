@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -14,7 +15,6 @@ namespace EnemyEditor
         private DispatcherTimer spawnTimer;
         private DispatcherTimer updateTimer;
 
-        // Статистики эффектов
         private double damageMultiplier = 1.0;
         private double cooldownMultiplier = 1.0;
         private double lifetimeMultiplier = 1.0;
@@ -23,8 +23,7 @@ namespace EnemyEditor
         private double cooldownBoostRemaining = 0;
         private double lifetimeBoostRemaining = 0;
 
-        // Настройки спавна
-        private double spawnRate = 3.0; // секунды между спавном
+        private double spawnRate = 3.0; 
         private double timeSinceLastSpawn = 0;
 
         private double minSpriteSize = 20;
@@ -48,12 +47,10 @@ namespace EnemyEditor
 
         private void InitializeTimers()
         {
-            // Таймер для спавна объектов
             spawnTimer = new DispatcherTimer();
             spawnTimer.Interval = TimeSpan.FromSeconds(1);
             spawnTimer.Tick += SpawnTimer_Tick;
 
-            // Таймер для обновления состояний
             updateTimer = new DispatcherTimer();
             updateTimer.Interval = TimeSpan.FromMilliseconds(100);
             updateTimer.Tick += UpdateTimer_Tick;
@@ -63,10 +60,6 @@ namespace EnemyEditor
         {
             spawnTimer.Start();
             updateTimer.Start();
-        }
-        public BigNumber ApplyDamageMultiplier(BigNumber baseDamage)
-        {
-            return baseDamage * damageMultiplier;
         }
 
         public void StopGame()
@@ -94,40 +87,37 @@ namespace EnemyEditor
 
         private void SpawnCollectable()
         {
-            // Случайная позиция
             double x = random.NextDouble() * (sceneSize.Width - maxSpriteSize);
             double y = random.NextDouble() * (sceneSize.Height - maxSpriteSize);
             Point position = new Point(x, y);
 
-            // Случайный размер и время жизни
             double size = random.NextDouble() * (maxSpriteSize - minSpriteSize) + minSpriteSize;
             double lifetime = random.NextDouble() * (maxLifetime - minLifetime) + minLifetime;
 
-            // Выбор типа объекта (с определенной вероятностью)
             int type = random.Next(100);
             CCollectable collectable = null;
 
-            if (type < 30) // 30% - золото
+            if (type < 30) 
             {
                 double goldValue = random.Next(1, 10);
                 collectable = new CPointGiver(position, size, lifetime, goldValue);
             }
-            else if (type < 55) // 25% - усиление урона
+            else if (type < 55) 
             {
-                double multiplier = 1.5 + random.NextDouble() * 0.5; // 1.5-2.0
-                double duration = 10 + random.NextDouble() * 10; // 10-20 секунд
+                double multiplier = 1.5 + random.NextDouble() * 0.5; 
+                double duration = 10 + random.NextDouble() * 10; 
                 collectable = new CDamageBooster(position, size, lifetime, multiplier, duration);
             }
-            else if (type < 80) // 25% - уменьшение перезарядки
+            else if (type < 80) 
             {
-                double reduction = 0.5 + random.NextDouble() * 0.3; // 0.5-0.8
-                double duration = 8 + random.NextDouble() * 8; // 8-16 секунд
+                double reduction = 0.5 + random.NextDouble() * 0.3; 
+                double duration = 8 + random.NextDouble() * 8; 
                 collectable = new CCooldownReducer(position, size, lifetime, reduction, duration);
             }
-            else // 20% - увеличение времени жизни
+            else 
             {
-                double multiplier = 1.3 + random.NextDouble() * 0.4; // 1.3-1.7
-                double duration = 12 + random.NextDouble() * 12; // 12-24 секунд
+                double multiplier = 1.3 + random.NextDouble() * 0.4; 
+                double duration = 12 + random.NextDouble() * 12; 
                 collectable = new CTimeExtender(position, size, lifetime, multiplier, duration);
             }
 
@@ -150,7 +140,6 @@ namespace EnemyEditor
 
         private void UpdateEffects(double deltaTime)
         {
-            // Обновление времени действия эффектов
             if (damageBoostRemaining > 0)
             {
                 damageBoostRemaining -= deltaTime;
@@ -187,12 +176,11 @@ namespace EnemyEditor
                 {
                     collectables[i].OnClick(player, this);
                     collectables.RemoveAt(i);
-                    break; // Обрабатываем только один клик
+                    break; 
                 }
             }
         }
 
-        // Активация эффектов
         public void ActivateDamageBoost(double multiplier, double duration)
         {
             damageMultiplier = multiplier;

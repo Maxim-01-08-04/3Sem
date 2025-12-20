@@ -154,16 +154,47 @@ namespace EnemyEditor
             if (multiplier == 0)
                 return new BigNumber("0");
 
+            if (multiplier == 1.0)
+                return a.Clone();
+
             try
             {
-                double aValue = double.Parse(a.ToString());
-                double resultValue = aValue * multiplier;
-                return new BigNumber(((int)resultValue).ToString());
+                string aStr = a.ToString();
+                if (double.TryParse(aStr, out double aValue))
+                {
+                    double resultValue = aValue * multiplier;
+                    return new BigNumber(((int)Math.Round(resultValue)).ToString());
+                }
+                else
+                {
+                    
+                    List<int> resultDigits = new List<int>();
+                    int carry = 0;
+
+                    foreach (int digit in a.number)
+                    {
+                        double multiplied = digit * multiplier + carry;
+                        resultDigits.Add((int)(multiplied % Base));
+                        carry = (int)(multiplied / Base);
+                    }
+
+                    if (carry > 0)
+                    {
+                        resultDigits.Add(carry);
+                    }
+
+                    return new BigNumber(resultDigits, a.isNegative);
+                }
             }
             catch
             {
-                return a;
+                return a.Clone();
             }
+        }
+
+        public static BigNumber operator *(BigNumber a, int multiplier)
+        {
+            return a * (double)multiplier;
         }
 
         public static BigNumber operator /(BigNumber a, double divisor)
