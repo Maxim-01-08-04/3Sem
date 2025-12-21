@@ -1,0 +1,29 @@
+[
+  {
+    "name": "goblach2",
+    "iconName": "goblin_1",
+    "baseline": 120,
+    "lifeModifier": 2,
+    "baseGold": 1000,
+    "goldModifier": 2,
+    "spawnChance": 0.5
+  },
+  {
+    "name": "goblach",
+    "iconName": "goblin_5",
+    "baseline": 120,
+    "lifeModifier": 2,
+    "baseGold": 1000,
+    "goldModifier": 2,
+    "spawnChance": 0.5
+  },
+  {
+    "name": "sans",
+    "iconName": "skeleton_2",
+    "baseline": 50,
+    "lifeModifier": 2,
+    "baseGold": 1000,
+    "goldModifier": 2,
+    "spawnChance": 0.5
+  }
+]

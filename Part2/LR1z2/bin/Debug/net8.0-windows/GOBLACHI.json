@@ -1,0 +1,35 @@
+[
+  {
+    "$type": "CShrinkingEnemyTemplate",
+    "ShrinkFactor": 0.8,
+    "Name": "SAS",
+    "IconName": "skeleton_2",
+    "Baselife": 100,
+    "LifeModifier": 2,
+    "BaseGold": 50,
+    "GoldModifier": 2,
+    "SpawnChance": 0.5
+  },
+  {
+    "$type": "CShrinkingEnemyTemplate",
+    "ShrinkFactor": 0.8,
+    "Name": "MINIGOBLA",
+    "IconName": "goblin_7",
+    "Baselife": 100,
+    "LifeModifier": 2,
+    "BaseGold": 50,
+    "GoldModifier": 2,
+    "SpawnChance": 0.5
+  },
+  {
+    "$type": "CArmoredEnemyTemplate",
+    "Armor": 25,
+    "Name": "GOBLAaaaaa",
+    "IconName": "goblin_8",
+    "Baselife": 100,
+    "LifeModifier": 2,
+    "BaseGold": 50,
+    "GoldModifier": 2,
+    "SpawnChance": 0.5
+  }
+]
